@@ -14,5 +14,121 @@ function gameBoard() {
         return board.flat();
     };
 
-    return {getSquareValue, setSquareValue, flattenBoard};
+    // Only for console version
+    const printBoard = () => {
+        console.table(board);
+    };
+
+    return {getSquareValue, setSquareValue, flattenBoard, printBoard};
 }
+
+function playGame() {
+    const board = gameBoard();
+    const players = [
+        {name: 'Player One', symbol: 'X'}, 
+        {name: 'Player Two', symbol: 'O'}];
+    
+    let activePlayer = players[0];
+    
+    const setActivePlayer = () => {
+        activePlayer = activePlayer === players[0] ? players[1] : players[0];
+    };
+
+    const getActivePlayer = () => {return activePlayer.name};
+
+    const setPlayerName = (player, index) => {
+        players[index].name = player;
+    };
+
+    const playRound = (row, col) => {
+        if(board.getSquareValue(row, col) === 0) {
+            board.setSquareValue(row, col, activePlayer.symbol);
+        }
+
+    };
+
+    const getWinner = () => {
+        // tic-tac-toe board is  3 x 3
+        // Not setting to static number incase dimensions change
+        const len = Math.sqrt(board.flattenBoard().length);
+        let matches = 0;
+        let route = [];
+
+        // diagonal right
+        // diag right is (n, n) => (row, row)
+        for(let row = 0; row < len; row++) {
+            if(board.getSquareValue(row, row) !== activePlayer.symbol){
+                matches = 0;
+                route.splice(0);
+                break;
+            }
+            route.push({row, col:row})
+            matches++;
+        }
+
+        if(matches === len)
+            return {flag: true , route};
+
+
+        // diagonal left
+        for(let row = 0, col = len - 1; row < len; row++, col--) {
+            if(board.getSquareValue(row, col) !== activePlayer.symbol) {
+                matches = 0;
+                route.splice(0);
+                break;
+            }
+            route.push({row, col})
+            matches++;
+        }
+
+        if(matches === len) {
+            return {flag: true , route};
+        }
+
+        // right
+        for(let row = 0; row < len; row++) {
+            for(let col = 0; col < len; col++) {
+                if(board.getSquareValue(row, col) !== activePlayer.symbol) {
+                    matches = 0;
+                    route.splice(0);
+                    break;
+                }
+                route.push({row, col})
+                matches++;
+            }
+
+            if(matches === len) {
+                return {flag: true , route};
+            }
+
+        }
+
+        // down
+        for(let col = 0; col < len; col++) {
+            for(let row = 0; row < len; row++) {
+                if(board.getSquareValue(row, col) !== activePlayer.symbol) {
+                    matches = 0;
+                    route.splice(0);
+                    break;
+                }
+
+                route.push({row, col})
+                matches++;
+            }
+            if(matches === len) {
+                return {flag: true , route};
+            }
+
+        }
+
+        if(board.flattenBoard().every((val) => val !== 0))
+            return false;
+    };
+
+    const printGameBoard = () => {
+        board.printBoard();
+    };
+
+    return {playRound, getActivePlayer, setPlayerName, printGameBoard};
+}
+
