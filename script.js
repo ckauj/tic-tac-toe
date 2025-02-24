@@ -1,18 +1,18 @@
-function GameBoard() {
-    this.dimensions = 3;
-    this.board = Array(this.dimensions).fill().map(() => Array(this.dimensions).fill(0));
+function gameBoard() {
+    dimensions = 3;
+    board = Array(dimensions).fill().map(() => Array(dimensions).fill(0));
 
-    this.getSquareValue = (row, col) => {
-        return this.board[row][col];
+    const getSquareValue = (row, col) => {
+        return board[row][col];
     };
 
-    this.setSquareValue = (row, col, symbol) => {
-        this.board[row][col] = symbol;
+    const setSquareValue = (row, col, symbol) => {
+        board[row][col] = symbol;
     };
 
-    this.flattenBoard = () => {
-        return this.board.flat();
+    const flattenBoard = () => {
+        return board.flat();
     };
+
+    return {getSquareValue, setSquareValue, flattenBoard};
 }
-
-
