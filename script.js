@@ -51,8 +51,8 @@ function playGame() {
         if(board.getSquareValue(row, col) === 0 && getWinner() === undefined) {
             setActivePlayer();
             board.setSquareValue(row, col, activePlayer.symbol);
+            return activePlayer.symbol;
         }
-
     };
 
     const getWinner = () => {
@@ -137,7 +137,7 @@ function playGame() {
         board.printBoard();
     };
 
-    return {playRound, getActivePlayer, setPlayerName, printGameBoard};
+    return {playRound, getActivePlayer, setPlayerName, printGameBoard, getWinner};
 }
 
 function gameDisplay() {
@@ -145,12 +145,28 @@ function gameDisplay() {
     const dimensions = 3;
     const squareContainerElem = document.querySelector('.square-container');
     
+    const squareClick = (btn) => {
+        const row = btn.getAttribute('row');
+        const col = btn.getAttribute('col');
+
+        btn.disabled = true;
+        nextMove = newGame.playRound(row, col);
+
+        if(typeof nextMove === 'string') {
+            btn.textContent = nextMove;
+        }
+
+    };
+
     for(let row = 0; row < dimensions; row++) {
         for(let col = 0; col < dimensions; col++) {
             const squareElem = document.createElement('button');
             squareElem.setAttribute('row', row);
             squareElem.setAttribute('col', col);
             squareElem.classList.add('square');
+            squareElem.addEventListener('click', () => {
+                squareClick(squareElem);
+            });
 
             squareContainerElem.appendChild(squareElem);
         }
