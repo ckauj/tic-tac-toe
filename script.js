@@ -41,7 +41,15 @@ function playGame() {
     };
 
     const playRound = (row, col) => {
-        if(board.getSquareValue(row, col) === 0) {
+        // Only for first move - best way I can think of fixing atm
+        // Sets active player to O, so active player can be X in next if statement
+        // Also lets HTML display correct person's turn on gamestart
+        if(board.flattenBoard().every((val) => val === 0)) {
+            setActivePlayer();
+        }
+
+        if(board.getSquareValue(row, col) === 0 && getWinner() === undefined) {
+            setActivePlayer();
             board.setSquareValue(row, col, activePlayer.symbol);
         }
 
@@ -131,4 +139,3 @@ function playGame() {
 
     return {playRound, getActivePlayer, setPlayerName, printGameBoard};
 }
-
