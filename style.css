@@ -1,8 +1,11 @@
 :root {
     --player-background-color: rgba(169, 169, 169, 0.862);
-    --header-background-color: rgba(169, 169, 169, 0.555);
+    --page-background-color: rgba(169, 169, 169, 0.555);
     --board-background-color: rgba(0, 0, 0, 0.679);
     --player-input-background-color: rgba(255, 160, 122, 0.302);
+    --square-background-color: rgba(255, 182, 193, 0.197);
+    --disabled-square-background-color: rgba(108, 108, 224, 0.598);
+    --win-square-background-color: rgb(255, 255, 125);
   }
 
 * {
@@ -34,7 +37,7 @@ body {
   text-align: center;
   padding: 10px;
   font-size: 2rem;
-  background-color: var(--header-background-color)
+  background-color: var(--page-background-color)
 }
 
 .player-names {
@@ -111,9 +114,21 @@ body {
 }
 
 .footer {
-  grid-area: footer;
+    grid-area: footer;
+    text-align: center;
+    background-color: var(--page-background-color);
+    place-content: center;
 }
 
+.footer button {
+    font-size: 2rem;
+    border: none;
+    border-radius: 20px;
+    padding: 15px 25px;
+    margin: 10px;
+}
+
+  
 .board-container {
   grid-area: board;
 }
@@ -125,15 +140,15 @@ body {
   }
 
   .square {
-    background-color: rgba(255, 182, 193, 0.197);
+    background-color: var(--square-background-color);
     border: 1px solid black;
     color: black;
   }
   
   .square:disabled {
-    background-color: rgba(108, 108, 224, 0.598);
+    background-color: var(--disabled-square-background-color);
   }
   
   .square.win-square {
-    background-color: rgb(255, 255, 125);
+    background-color: var(--win-square-background-color);
   }
