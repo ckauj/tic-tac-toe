@@ -155,7 +155,30 @@ function gameDisplay() {
         if(typeof nextMove === 'string') {
             btn.textContent = nextMove;
         }
+            
+        isWinner(newGame.getWinner());
 
+    };
+
+    const isWinner = (gameStatus) => {
+        if(gameStatus === undefined) {
+            return;
+        }
+
+        if(gameStatus === false) {
+            // game is tie
+        } else {
+            for(let sqr = 0; sqr < dimensions; sqr++) {
+                const row = gameStatus.route[sqr].row;
+                const col = gameStatus.route[sqr].col;
+    
+                const square = document.querySelector(`[row="${row}"][col="${col}"]`);
+                square.classList.add('win-square');
+                // game is win
+            }
+        }
+
+        // something that ends the game
     };
 
     for(let row = 0; row < dimensions; row++) {
