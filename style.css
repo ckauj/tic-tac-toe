@@ -1,0 +1,44 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.game-container {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr;
+  grid-template-rows: 1fr 5fr 1fr;
+  grid-template-areas: 
+      "player-one header player-two"
+      "player-one board player-two"
+      "player-one footer player-two";
+}
+
+.header {
+  grid-area: header;
+}
+
+.player-one-container {
+  grid-area: player-one;
+}
+
+.player-two-container {
+  grid-area: player-two;
+}
+
+
+.footer {
+  grid-area: footer;
+}
+
+.board-container {
+  grid-area: board;
+}
