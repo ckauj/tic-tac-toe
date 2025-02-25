@@ -42,3 +42,23 @@ body {
 .board-container {
   grid-area: board;
 }
+
+.square-container {
+    display: grid;
+    height: 100%;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+
+  .square {
+    background-color: rgba(255, 182, 193, 0.197);
+    border: 1px solid black;
+    color: black;
+  }
+  
+  .square:disabled {
+    background-color: rgba(108, 108, 224, 0.598);
+  }
+  
+  .square.win-square {
+    background-color: rgb(255, 255, 125);
+  }
