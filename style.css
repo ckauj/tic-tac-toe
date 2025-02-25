@@ -70,7 +70,44 @@ body {
 }
 
 .player-two-container {
-  grid-area: player-two;
+  grid-area: player-two; 
+}
+
+.player-one-container,
+.player-two-container {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--player-background-color)
+}
+
+.player-name {
+    font-size: 3rem;
+}
+
+.player-symbol {
+    font-size: 2rem;
+    border-radius: 20px;
+    border: 1px solid black;
+    padding: 10px;
+}
+
+.player-icon {
+    height: 50px;
+    width: 50px;
+    filter: invert(100%);
+}
+
+.player-icon-background {
+    border-radius: 100%;
+    background-color: rgb(206, 92, 212);
+    border: 1px solid lightcoral;
+    height: 100px;
+    width: 100px;
+    place-content: center;
+    text-align: center;
 }
 
 .footer {
