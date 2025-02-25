@@ -139,3 +139,22 @@ function playGame() {
 
     return {playRound, getActivePlayer, setPlayerName, printGameBoard};
 }
+
+function gameDisplay() {
+    const newGame = playGame();
+    const dimensions = 3;
+    const squareContainerElem = document.querySelector('.square-container');
+    
+    for(let row = 0; row < dimensions; row++) {
+        for(let col = 0; col < dimensions; col++) {
+            const squareElem = document.createElement('button');
+            squareElem.setAttribute('row', row);
+            squareElem.setAttribute('col', col);
+            squareElem.classList.add('square');
+
+            squareContainerElem.appendChild(squareElem);
+        }
+    }
+}
+
+gameDisplay();
