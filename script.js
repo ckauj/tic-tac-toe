@@ -161,6 +161,7 @@ function gameDisplay() {
     };
 
     const isWinner = (gameStatus) => {
+        // No winner/tie yet
         if(gameStatus === undefined) {
             return;
         }
@@ -172,14 +173,20 @@ function gameDisplay() {
                 const row = gameStatus.route[sqr].row;
                 const col = gameStatus.route[sqr].col;
     
-                const square = document.querySelector(`[row="${row}"][col="${col}"]`);
-                square.classList.add('win-square');
+                const squareElem = document.querySelector(`[row="${row}"][col="${col}"]`);
+                squareElem.classList.add('win-square');
                 // game is win
             }
         }
 
         // something that ends the game
     };
+
+    const clearBoard = (() => {
+        while(squareContainerElem.firstChild) {
+            squareContainerElem.removeChild(squareContainerElem.firstChild);
+        }
+    })();
 
     for(let row = 0; row < dimensions; row++) {
         for(let col = 0; col < dimensions; col++) {
