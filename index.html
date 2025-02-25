@@ -3,9 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <title>Tic Tac Toe</title>
 </head>
 <body>
+    <div class="game-container">
+        <div class="header">
+            <h1>Tic-Tac-Toe</h1>
+            <div class="player-names show">
+                <p class="game-msg"><em>Enter names and then click <b>Start Game</b>. Player One goes first!</em></p>
+                <p class="player-one-inp">
+                    <label for="player-one-name">Player One Name:</label>
+                    <input type="text" name="player-one-name" id="player-one-name">
+                </p>
+                <p class="player-two-inp">
+                    <label for="player-two-name">Player Two Name:</label>
+                    <input type="text" name="player-two-name" id="player-two-name">
+                </p>
+            </div>
+        </div>
+        <div class="player-one-container">
+            <div class="player-icon-background">
+                <img class="player-icon" src="images/google-downasaur.svg" alt="google-downasaur">
+            </div>
+            <h2 id="player-one" class="player-name">Player One</h2>
+            <span class="player-symbol">X</span>
+            <span class="player-one-turn"></span>
+        </div>
+        <div class="board-container">
+            <div class="square-container"></div>
+        </div>
+        <div class="player-two-container">
+            <div class="player-icon-background">
+                <img class="player-icon" src="images/jellyfish-outline.svg" alt="jellyfish-outline">
+            </div>
+            <h2 id="player-two" class="player-name">Player Two</h2>
+            <span class="player-symbol">O</span>
+            <span class="player-two-turn"></span>
+        </div>
+        <div class="footer">
+            <button class="footer-game-start-button">Start Game</button>
+            <button class="footer-game-end-button">End Game</button>
+        </div>
+    </div>
+    <div class="modal-outer">
+        <div class="modal-inner">
+        </div>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
