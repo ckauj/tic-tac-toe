@@ -146,12 +146,12 @@ function gameDisplay() {
     const squareContainerElem = document.querySelector('.square-container');
     const modalOuterElem = document.querySelector('.modal-outer');
     const modalInnerElem = document.querySelector('.modal-inner');
-    
+
     clearBoard();
     // Only toggles off or does nothing
     modalOuterElem.classList.toggle('open', false);
+    modalInnerElem.textContent = "";
     endGameBtn.addEventListener('click', clearBoard);
-    // toggleGameBtns();
 
     const squareClick = (btn) => {
         const row = btn.getAttribute('row');
@@ -175,7 +175,7 @@ function gameDisplay() {
         }
 
         if(gameStatus === false) {
-            // game is tie
+            modalInnerElem.textContent = 'This game was a tie!';
         } else {
             for(let sqr = 0; sqr < dimensions; sqr++) {
                 const row = gameStatus.route[sqr].row;
@@ -183,7 +183,7 @@ function gameDisplay() {
     
                 const squareElem = document.querySelector(`[row="${row}"][col="${col}"]`);
                 squareElem.classList.add('win-square');
-                // game is win
+                modalInnerElem.textContent = `${newGame.getActivePlayer()} is the winner!`;
             }
         }
 
