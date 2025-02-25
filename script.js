@@ -144,7 +144,15 @@ function gameDisplay() {
     const newGame = playGame();
     const dimensions = 3;
     const squareContainerElem = document.querySelector('.square-container');
+    const modalOuterElem = document.querySelector('.modal-outer');
+    const modalInnerElem = document.querySelector('.modal-inner');
     
+    clearBoard();
+    // Only toggles off or does nothing
+    modalOuterElem.classList.toggle('open', false);
+    endGameBtn.addEventListener('click', clearBoard);
+    // toggleGameBtns();
+
     const squareClick = (btn) => {
         const row = btn.getAttribute('row');
         const col = btn.getAttribute('col');
@@ -180,13 +188,16 @@ function gameDisplay() {
         }
 
         // something that ends the game
+        endGame();
     };
 
-    const clearBoard = (() => {
-        while(squareContainerElem.firstChild) {
-            squareContainerElem.removeChild(squareContainerElem.firstChild);
-        }
-    })();
+    const endGame = () => {
+        modalOuterElem.classList.toggle('open');
+        // When startGame is clicked after win, old eventListener stays on endGameBtn
+        // ...even though clearBoard() runs on new game
+        endGameBtn.removeEventListener('click', clearBoard);
+        toggleGameBtns();
+    };
 
     for(let row = 0; row < dimensions; row++) {
         for(let col = 0; col < dimensions; col++) {
@@ -201,6 +212,25 @@ function gameDisplay() {
             squareContainerElem.appendChild(squareElem);
         }
     }
-}
 
-gameDisplay();
+    function toggleGameBtns() {
+        startGameBtn.disabled = startGameBtn.disabled === true ? false : true;
+        endGameBtn.disabled = endGameBtn.disabled === true ? false : true;
+    }
+
+    function clearBoard() {
+        while(squareContainerElem.firstChild) {
+            squareContainerElem.removeChild(squareContainerElem.firstChild);
+        }
+        endGameBtn.removeEventListener('click', clearBoard);
+        toggleGameBtns();
+    }
+
+}
+const endGameBtn = document.querySelector('.footer-game-end-button');
+endGameBtn.disabled = true;
+
+const startGameBtn = document.querySelector('.footer-game-start-button');
+startGameBtn.addEventListener('click', () => {
+    gameDisplay();
+});
