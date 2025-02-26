@@ -14,12 +14,7 @@ function gameBoard() {
         return board.flat();
     };
 
-    // Only for console version
-    const printBoard = () => {
-        console.table(board);
-    };
-
-    return {getSquareValue, setSquareValue, flattenBoard, printBoard};
+    return {getSquareValue, setSquareValue, flattenBoard};
 }
 
 function playGame() {
@@ -148,11 +143,7 @@ function playGame() {
             return false;
     };
 
-    const printGameBoard = () => {
-        board.printBoard();
-    };
-
-    return {playRound, getActivePlayer, setPlayerName, printGameBoard, getWinner};
+    return {playRound, getActivePlayer, setPlayerName, getWinner};
 }
 
 function gameDisplay() {
