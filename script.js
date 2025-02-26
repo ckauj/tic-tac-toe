@@ -58,9 +58,9 @@ function playGame() {
         // Not setting to static number incase dimensions change
         const len = Math.sqrt(board.flattenBoard().length);
         let matches = 0;
-        let route = [];
+        let route = []; // Returns winning route
 
-        // diagonal right
+        // check diagonal right
         // diag right is (n, n) => (row, row)
         for(let row = 0; row < len; row++) {
             if(board.getSquareValue(row, row) !== activePlayer.symbol){
@@ -79,7 +79,7 @@ function playGame() {
             return {flag: true , route};
 
 
-        // diagonal left
+        // check diagonal left
         for(let row = 0, col = len - 1; row < len; row++, col--) {
             if(board.getSquareValue(row, col) !== activePlayer.symbol) {
                 matches = 0;
@@ -97,7 +97,7 @@ function playGame() {
             return {flag: true , route};
         }
 
-        // right
+        // check right
         for(let row = 0; row < len; row++) {
             for(let col = 0; col < len; col++) {
                 if(board.getSquareValue(row, col) !== activePlayer.symbol) {
@@ -118,7 +118,7 @@ function playGame() {
 
         }
 
-        // down
+        // check down
         for(let col = 0; col < len; col++) {
             for(let row = 0; row < len; row++) {
                 if(board.getSquareValue(row, col) !== activePlayer.symbol) {
@@ -152,18 +152,22 @@ function gameDisplay() {
     const squareContainerElem = document.querySelector('.square-container');
     const modalOuterElem = document.querySelector('.modal-outer');
     const modalInnerElem = document.querySelector('.modal-inner');
-    const playerNamesContainerElem = document.querySelector('.player-names');
     const playerOneTurnElem = document.querySelector('.player-one-turn');
     const playerTwoTurnElem = document.querySelector('.player-two-turn');
 
     resetGameDisplay()
     removeSquaresFromBoard();
     
+    // Removes open class from modal or does nothing
+    // Modal exists if previous game ended naturally
+    // Remove any message previously in modal
     modalOuterElem.classList.toggle('open', false);
-    playerNamesContainerElem.classList.toggle('hide', true);
-    playerOneTurnElem.classList.toggle('hide', false);
     modalInnerElem.textContent = "";
 
+    // Removes hide class from playerOneTurn div or does nothing
+    // Displays 'Your Move!' in player one container
+    playerOneTurnElem.classList.toggle('hide', false);
+    
     const togglePlayerTurn = () => {
         playerOneTurnElem.classList.toggle('hide');
         playerTwoTurnElem.classList.toggle('hide');
@@ -178,33 +182,35 @@ function gameDisplay() {
 
         const playerOne = playerOneInpElem.value !== "" ? playerOneInpElem.value : 'Player One';
         const playerTwo = playerTwoInpElem.value !== "" ? playerTwoInpElem.value : 'Player Two';
+
         playerOneInpElem.value = "";
         playerTwoInpElem.value = "";
 
+        // Changes player names in DOM to value of player name inputs
         document.getElementById('player-one').textContent = playerOne;
         document.getElementById('player-two').textContent = playerTwo;
 
         newGame.setPlayerName(playerOne, playerTwo);
     })();
 
-    const squareClick = (btn) => {
-        const row = btn.getAttribute('row');
-        const col = btn.getAttribute('col');
+    const squareClick = (square) => {
+        const row = square.getAttribute('row');
+        const col = square.getAttribute('col');
 
-        btn.disabled = true;
+        square.disabled = true;
         
         nextMove = newGame.playRound(row, col);
 
         if(typeof nextMove === 'string') {
-            btn.textContent = nextMove;
+            square.textContent = nextMove;
             togglePlayerTurn();
         }
             
-        isWinner(newGame.getWinner());
+        isFinishedGame(newGame.getWinner());
 
     };
 
-    const isWinner = (gameStatus) => {
+    const isFinishedGame = (gameStatus) => {
         // No winner/tie yet
         if(gameStatus === undefined) {
             return;
@@ -213,9 +219,11 @@ function gameDisplay() {
         if(gameStatus === false) {
             modalInnerElem.textContent = 'This game was a tie!';
         } else {
-            for(let sqr = 0; sqr < dimensions; sqr++) {
-                const row = gameStatus.route[sqr].row;
-                const col = gameStatus.route[sqr].col;
+            for(let square = 0; square < dimensions; square++) {
+
+                // getWinner() returns route - which is winning squares on board
+                const row = gameStatus.route[square].row;
+                const col = gameStatus.route[square].col;
     
                 const squareElem = document.querySelector(`[row="${row}"][col="${col}"]`);
                 squareElem.classList.add('win-square');
@@ -224,26 +232,22 @@ function gameDisplay() {
             }
         }
 
-        // something that ends the game
-        endGame();
-    };
-
-    const endGame = () => {
         modalOuterElem.classList.toggle('open');
         
         // Disable all squares to avoid click events
         // Change unplayed squares background color for clarity
         squareContainerElem.querySelectorAll('button').forEach(
-            (btn) => {
-                btn.disabled = true;
-                if(btn.textContent === "") {
-                    btn.classList.toggle('disabled');
+            (square) => {
+                square.disabled = true;
+                if(square.textContent === "") {
+                    square.classList.toggle('disabled');
                 }
             });
 
         resetGameDisplay()
     };
 
+    // Inital squares added to game board
     for(let row = 0; row < dimensions; row++) {
         for(let col = 0; col < dimensions; col++) {
             const squareElem = document.createElement('button');
@@ -272,8 +276,12 @@ function gameDisplay() {
         }    
     }
 
+    // Function to set things back to orignal state for next game
+    // These occur whether game ends naturally or endGameBtn was clicked
     function resetGameDisplay() {
-        playerNamesContainerElem.classList.toggle('hide', false);
+        const playerNamesContainerElem = document.querySelector('.player-names');
+
+        playerNamesContainerElem.classList.toggle('hide');
         playerOneTurnElem.classList.toggle('hide', true);
         playerTwoTurnElem.classList.toggle('hide', true);
         endGameBtn.removeEventListener('click', removeSquaresFromBoard);
