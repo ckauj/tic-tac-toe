@@ -36,8 +36,9 @@ function playGame() {
 
     const getActivePlayer = () => {return activePlayer.name};
 
-    const setPlayerName = (player, index) => {
-        players[index].name = player;
+    const setPlayerName = (playerOne, playerTwo) => {
+        players[0].name = playerOne;
+        players[1].name = playerTwo; 
     };
 
     const playRound = (row, col) => {
@@ -146,12 +147,27 @@ function gameDisplay() {
     const squareContainerElem = document.querySelector('.square-container');
     const modalOuterElem = document.querySelector('.modal-outer');
     const modalInnerElem = document.querySelector('.modal-inner');
+    const playerNamesContainerElem = document.querySelector('.player-names');
 
     clearBoard();
     // Only toggles off or does nothing
     modalOuterElem.classList.toggle('open', false);
+    playerNamesContainerElem.classList.toggle('hide', true);
     modalInnerElem.textContent = "";
     endGameBtn.addEventListener('click', clearBoard);
+
+    const setPlayerNames = (function() {
+        const playerOneInpElem = document.getElementById('player-one-name');
+        const playerTwoInpElem = document.getElementById('player-two-name');
+
+        const playerOne = playerOneInpElem.value !== "" ? playerOneInpElem.value : 'Player One';
+        const playerTwo = playerTwoInpElem.value !== "" ? playerTwoInpElem.value : 'Player Two';
+
+        document.getElementById('player-one').textContent = playerOne;
+        document.getElementById('player-two').textContent = playerTwo;
+
+        newGame.setPlayerName(playerOne, playerTwo);
+    })();
 
     const squareClick = (btn) => {
         const row = btn.getAttribute('row');
@@ -193,6 +209,7 @@ function gameDisplay() {
 
     const endGame = () => {
         modalOuterElem.classList.toggle('open');
+        playerNamesContainerElem.classList.toggle('hide', false);
         // When startGame is clicked after win, old eventListener stays on endGameBtn
         // ...even though clearBoard() runs on new game
         endGameBtn.removeEventListener('click', clearBoard);
@@ -219,6 +236,7 @@ function gameDisplay() {
     }
 
     function clearBoard() {
+        playerNamesContainerElem.classList.toggle('hide', false);
         while(squareContainerElem.firstChild) {
             squareContainerElem.removeChild(squareContainerElem.firstChild);
         }
