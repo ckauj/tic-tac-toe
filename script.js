@@ -162,17 +162,24 @@ function gameDisplay() {
     const modalOuterElem = document.querySelector('.modal-outer');
     const modalInnerElem = document.querySelector('.modal-inner');
     const playerNamesContainerElem = document.querySelector('.player-names');
+    const playerOneTurnElem = document.querySelector('.player-one-turn');
+    const playerTwoTurnElem = document.querySelector('.player-two-turn');
 
-    clearBoard();
+    resetGameDisplay()
+    removeSquaresFromBoard();
     
-    // Only toggles off or does nothing
     modalOuterElem.classList.toggle('open', false);
-    
     playerNamesContainerElem.classList.toggle('hide', true);
-    
+    playerOneTurnElem.classList.toggle('hide', false);
     modalInnerElem.textContent = "";
-    
-    endGameBtn.addEventListener('click', clearBoard);
+
+    const togglePlayerTurn = () => {
+        playerOneTurnElem.classList.toggle('hide');
+        playerTwoTurnElem.classList.toggle('hide');
+    };
+
+    endGameBtn.addEventListener('click', removeSquaresFromBoard);
+    endGameBtn.addEventListener('click', resetGameDisplay);
 
     const setPlayerNames = (function() {
         const playerOneInpElem = document.getElementById('player-one-name');
@@ -199,6 +206,7 @@ function gameDisplay() {
 
         if(typeof nextMove === 'string') {
             btn.textContent = nextMove;
+            togglePlayerTurn();
         }
             
         isWinner(newGame.getWinner());
@@ -232,12 +240,6 @@ function gameDisplay() {
     const endGame = () => {
         modalOuterElem.classList.toggle('open');
         
-        playerNamesContainerElem.classList.toggle('hide', false);
-        
-        // When startGame is clicked after win, old eventListener stays on endGameBtn
-        // ...even though clearBoard() runs on new game
-        endGameBtn.removeEventListener('click', clearBoard);
-        
         // Disable all squares to avoid click events
         // Change unplayed squares background color for clarity
         squareContainerElem.querySelectorAll('button').forEach(
@@ -247,8 +249,8 @@ function gameDisplay() {
                     btn.classList.toggle('disabled');
                 }
             });
-        
-            toggleGameBtns();
+
+        resetGameDisplay()
     };
 
     for(let row = 0; row < dimensions; row++) {
@@ -273,18 +275,20 @@ function gameDisplay() {
         endGameBtn.disabled = endGameBtn.disabled === true ? false : true;
     }
 
-    function clearBoard() {
-        playerNamesContainerElem.classList.toggle('hide', false);
-        
+    function removeSquaresFromBoard() {
         while(squareContainerElem.firstChild) {
             squareContainerElem.removeChild(squareContainerElem.firstChild);
-        }
-        
-        endGameBtn.removeEventListener('click', clearBoard);
-        
-        toggleGameBtns();
+        }    
     }
 
+    function resetGameDisplay() {
+        playerNamesContainerElem.classList.toggle('hide', false);
+        playerOneTurnElem.classList.toggle('hide', true);
+        playerTwoTurnElem.classList.toggle('hide', true);
+        endGameBtn.removeEventListener('click', removeSquaresFromBoard);
+        endGameBtn.removeEventListener('click', resetGameDisplay);
+        toggleGameBtns();
+    }
 }
 const endGameBtn = document.querySelector('.footer-game-end-button');
 endGameBtn.disabled = true;
