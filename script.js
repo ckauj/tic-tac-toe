@@ -51,7 +51,9 @@ function playGame() {
 
         if(board.getSquareValue(row, col) === 0 && getWinner() === undefined) {
             setActivePlayer();
+            
             board.setSquareValue(row, col, activePlayer.symbol);
+            
             return activePlayer.symbol;
         }
     };
@@ -68,10 +70,13 @@ function playGame() {
         for(let row = 0; row < len; row++) {
             if(board.getSquareValue(row, row) !== activePlayer.symbol){
                 matches = 0;
+                
                 route.splice(0);
+                
                 break;
             }
             route.push({row, col:row})
+            
             matches++;
         }
 
@@ -83,10 +88,13 @@ function playGame() {
         for(let row = 0, col = len - 1; row < len; row++, col--) {
             if(board.getSquareValue(row, col) !== activePlayer.symbol) {
                 matches = 0;
+                
                 route.splice(0);
+                
                 break;
             }
             route.push({row, col})
+            
             matches++;
         }
 
@@ -99,10 +107,13 @@ function playGame() {
             for(let col = 0; col < len; col++) {
                 if(board.getSquareValue(row, col) !== activePlayer.symbol) {
                     matches = 0;
+                    
                     route.splice(0);
+                    
                     break;
                 }
                 route.push({row, col})
+                
                 matches++;
             }
 
@@ -117,11 +128,14 @@ function playGame() {
             for(let row = 0; row < len; row++) {
                 if(board.getSquareValue(row, col) !== activePlayer.symbol) {
                     matches = 0;
+                    
                     route.splice(0);
+                    
                     break;
                 }
 
                 route.push({row, col})
+                
                 matches++;
             }
             if(matches === len) {
@@ -150,10 +164,14 @@ function gameDisplay() {
     const playerNamesContainerElem = document.querySelector('.player-names');
 
     clearBoard();
+    
     // Only toggles off or does nothing
     modalOuterElem.classList.toggle('open', false);
+    
     playerNamesContainerElem.classList.toggle('hide', true);
+    
     modalInnerElem.textContent = "";
+    
     endGameBtn.addEventListener('click', clearBoard);
 
     const setPlayerNames = (function() {
@@ -162,6 +180,8 @@ function gameDisplay() {
 
         const playerOne = playerOneInpElem.value !== "" ? playerOneInpElem.value : 'Player One';
         const playerTwo = playerTwoInpElem.value !== "" ? playerTwoInpElem.value : 'Player Two';
+        playerOneInpElem.value = "";
+        playerTwoInpElem.value = "";
 
         document.getElementById('player-one').textContent = playerOne;
         document.getElementById('player-two').textContent = playerTwo;
@@ -174,6 +194,7 @@ function gameDisplay() {
         const col = btn.getAttribute('col');
 
         btn.disabled = true;
+        
         nextMove = newGame.playRound(row, col);
 
         if(typeof nextMove === 'string') {
@@ -199,6 +220,7 @@ function gameDisplay() {
     
                 const squareElem = document.querySelector(`[row="${row}"][col="${col}"]`);
                 squareElem.classList.add('win-square');
+                
                 modalInnerElem.textContent = `${newGame.getActivePlayer()} is the winner!`;
             }
         }
@@ -209,19 +231,35 @@ function gameDisplay() {
 
     const endGame = () => {
         modalOuterElem.classList.toggle('open');
+        
         playerNamesContainerElem.classList.toggle('hide', false);
+        
         // When startGame is clicked after win, old eventListener stays on endGameBtn
         // ...even though clearBoard() runs on new game
         endGameBtn.removeEventListener('click', clearBoard);
-        toggleGameBtns();
+        
+        // Disable all squares to avoid click events
+        // Change unplayed squares background color for clarity
+        squareContainerElem.querySelectorAll('button').forEach(
+            (btn) => {
+                btn.disabled = true;
+                if(btn.textContent === "") {
+                    btn.classList.toggle('disabled');
+                }
+            });
+        
+            toggleGameBtns();
     };
 
     for(let row = 0; row < dimensions; row++) {
         for(let col = 0; col < dimensions; col++) {
             const squareElem = document.createElement('button');
+            
             squareElem.setAttribute('row', row);
             squareElem.setAttribute('col', col);
+            
             squareElem.classList.add('square');
+            
             squareElem.addEventListener('click', () => {
                 squareClick(squareElem);
             });
@@ -237,10 +275,13 @@ function gameDisplay() {
 
     function clearBoard() {
         playerNamesContainerElem.classList.toggle('hide', false);
+        
         while(squareContainerElem.firstChild) {
             squareContainerElem.removeChild(squareContainerElem.firstChild);
         }
+        
         endGameBtn.removeEventListener('click', clearBoard);
+        
         toggleGameBtns();
     }
 

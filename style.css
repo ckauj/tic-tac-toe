@@ -180,3 +180,7 @@ body {
 .modal-outer.open {
     opacity: 1;
 }
+
+.square.disabled {
+    background-color: rgba(128, 128, 128, 0.268);
+}
