@@ -1,6 +1,6 @@
 function gameBoard() {
-    dimensions = 3;
-    board = Array(dimensions).fill().map(() => Array(dimensions).fill(0));
+    const dimensions = 3;
+    const board = Array(dimensions).fill().map(() => Array(dimensions).fill(0));
 
     const getSquareValue = (row, col) => {
         return board[row][col];

@@ -1,14 +1,14 @@
 :root {
-    --player-background-color: rgba(169, 169, 169, 0.862);
-    --page-background-color: rgba(169, 169, 169, 0.555);
-    --board-background-color: rgba(0, 0, 0, 0.679);
-    --player-input-background-color: rgba(255, 160, 122, 0.302);
-    --square-background-color: rgba(255, 182, 193, 0.197);
+    --player-background-color: rgba(220, 155, 237, 0.323);
+    --page-background-color: white;
+    --player-input-background-color: rgb(247, 223, 245);
+    --footer-button-color: rgb(247, 223, 245);
+    --footer-button-disabled: rgba(247, 223, 245, 0.683);
+    --square-background-color: rgb(247, 223, 245);
     --disabled-square-background-color: rgba(108, 108, 224, 0.598);
     --win-square-background-color: rgba(255, 255, 125, 0.688);
-    --modal-background-color: rgba(255, 160, 122, 0.722);
-    --modal-font-color: rgb(63, 59, 59);
-    --unplayed-square-background-color: rgba(128, 128, 128, 0.268);
+    --modal-background-color: rgba(247, 223, 245, 0.835);
+    --unplayed-square-background-color: rgb(207, 204, 204);
     --player-one-color: rgb(206, 92, 212);
     --player-one-icon-border: 1px solid lightcoral;
     --player-two-color: rgb(38, 104, 123);
@@ -32,19 +32,24 @@ body {
   height: 100%;
   display: grid;
   grid-template-columns: 1fr 3fr 1fr;
-  grid-template-rows: 1fr 5fr 1fr;
+  grid-template-rows: 2fr 7fr 1fr;
   grid-template-areas: 
-      "player-one header player-two"
+      "header header header"
       "player-one board player-two"
-      "player-one footer player-two";
+      "footer footer footer";
 }
 
 .header {
   grid-area: header;
   text-align: center;
-  padding: 10px;
+  padding: 10px 0;
+  margin: 0 20px;
   font-size: 2rem;
-  background-color: var(--page-background-color)
+  background-color: var(--page-background-color);
+}
+
+h1 {
+    margin-bottom: 15px;
 }
 
 .player-names {
@@ -55,7 +60,8 @@ body {
     gap: 10px;
     font-size: 1rem;
     border: 1px solid var(--player-background-color);
-    background-color: var(--player-input-background-color)
+    background-color: var(--player-input-background-color);
+    border-radius: 20px;
 }
 
 .player-one-inp {
@@ -65,6 +71,13 @@ body {
   
 .player-two-inp {
     grid-row: 2 / 3
+}
+
+.player-one-inp,
+.player-two-inp {
+    display: flex;
+    place-self: center;
+    gap: 10px;
 }
 
 .game-msg {
@@ -92,7 +105,9 @@ body {
   justify-content: center;
   overflow: hidden;
   max-width: 400px;
-  background-color: var(--player-background-color)
+  background-color: var(--player-background-color);
+  margin: 0 20px;
+  border-radius: 20px;
 }
 
 .player-name {
@@ -129,6 +144,31 @@ body {
     text-align: center;
 }
 
+.player-one-turn,
+.player-two-turn {
+    padding: 15px 25px;
+    border-radius: 15px;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.player-one-turn {
+    background-color: #fff;
+    border: solid 2px #fff;
+    box-shadow:
+      inset 20px 0 60px var(--player-one-color), 
+      inset -20px 0 60px rgb(88, 164, 164); 
+}
+
+.player-two-turn {
+    background-color: #fff;
+    border: solid 2px #fff;
+    box-shadow:
+      inset 20px 0 60px var(--player-two-color), 
+      inset -20px 0 60px rgb(189, 201, 112); 
+}
+
 .player-one-container .player-icon-background {
     background-color: var(--player-one-color);
     border: var(--player-one-icon-border);
@@ -144,6 +184,8 @@ body {
     text-align: center;
     background-color: var(--page-background-color);
     place-content: center;
+    display: flex;
+    gap: 70px;
 }
 
 .footer button {
@@ -164,12 +206,15 @@ body {
     display: grid;
     height: 100%;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    background-color: var(--square-background-color);
 }
 
 .square {
     background-color: var(--square-background-color);
     border: 1px solid black;
     color: black;
+    font-size: 32px;
+    font-weight: bold;
 }
   
 .square:disabled {
@@ -205,7 +250,7 @@ body {
     align-content: center;
     text-wrap: wrap;
     overflow: auto;
-    color: var(--modal-font-color);
+    color: black;
     background-color: var(--modal-background-color);
     font-weight: bold;
 }
@@ -216,4 +261,13 @@ body {
 
 .square.disabled {
     background-color: var(--unplayed-square-background-color);
+}
+
+.footer button:enabled {
+    background-color: var(--footer-button-color);
+    border: 2px solid rgba(215, 103, 120, 0.348);
+}
+
+.footer button:disabled {
+    background-color: var(--footer-button-disabled);
 }
